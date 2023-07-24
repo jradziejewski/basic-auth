@@ -8,7 +8,7 @@ export default function ForgotPassword() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const emailRef = useRef();
-  const { resetPassword } = useAuth();
+  const { passwordReset } = useAuth();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -17,7 +17,7 @@ export default function ForgotPassword() {
       setMessage("");
       setError("");
       setLoading(true);
-      await resetPassword(emailRef.current.value);
+      await passwordReset(emailRef.current.value);
       setMessage("Check your inbox for further instructions");
     } catch {
       setError("Could not reset password. Please try again.");

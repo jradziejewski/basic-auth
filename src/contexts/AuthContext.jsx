@@ -5,6 +5,8 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
+  updateEmail,
+  updatePassword,
 } from "firebase/auth";
 import propTypes from "prop-types";
 
@@ -35,8 +37,16 @@ export function AuthProvider({ children }) {
     return signOut(auth);
   }
 
-  function resetPassword(email) {
+  function passwordReset(email) {
     return sendPasswordResetEmail(auth, email);
+  }
+
+  function emailUpdate(email) {
+    return updateEmail(auth.currentUser, email);
+  }
+
+  function passwordUpdate(password) {
+    return updatePassword(auth.currentUser, password);
   }
 
   const value = {
@@ -44,7 +54,9 @@ export function AuthProvider({ children }) {
     signup,
     login,
     logout,
-    resetPassword,
+    passwordReset,
+    emailUpdate,
+    passwordUpdate,
   };
 
   return (
