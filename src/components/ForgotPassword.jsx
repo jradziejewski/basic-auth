@@ -1,26 +1,26 @@
 import { useRef, useState } from "react";
 import { Form, Card, Button, Alert } from "react-bootstrap";
 import { useAuth } from "../contexts/useAuth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export default function Login() {
+export default function ForgotPassword() {
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const emailRef = useRef();
-  const passwordRef = useRef();
-  const { login } = useAuth();
-  let navigate = useNavigate();
+  const { resetPassword } = useAuth();
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     try {
+      setMessage("");
       setError("");
       setLoading(true);
-      await login(emailRef.current.value, passwordRef.current.value);
-      navigate("/");
+      await resetPassword(emailRef.current.value);
+      setMessage("Check your inbox for further instructions");
     } catch {
-      setError("Could not sign in. Please try again.");
+      setError("Could not reset password. Please try again.");
     }
     setLoading(false);
   }
@@ -29,25 +29,22 @@ export default function Login() {
     <>
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-3">Log In</h2>
+          <h2 className="text-center mb-3">Reset Password</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
               <Form.Control type="email" ref={emailRef} required />
             </Form.Group>
-            <Form.Group id="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" ref={passwordRef} required />
-            </Form.Group>
             <Button disabled={loading} className="w-100 mt-4" type="submit">
-              Log In
+              Reset Password
             </Button>
           </Form>
         </Card.Body>
         <div className="w-100 text-center mb-3">
-          <Link to="/forgot-password">Forgot Password?</Link>
+          <Link to="/login">Login</Link>
         </div>
+        {message && <Alert variant="success">{message}</Alert>}
       </Card>
       <div className="w-100 text-center mb-3">
         Don&apos;t have an account yet? <br />
